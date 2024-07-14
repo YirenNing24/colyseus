@@ -1,0 +1,25 @@
+import { EventEmitter } from "events";
+import { ServerOpts, Socket } from "net";
+export declare const REMOTE_ROOM_SHORT_TIMEOUT: number;
+export declare function generateId(length?: number): any;
+export declare function getBearerToken(authHeader: string): string;
+export declare function registerGracefulShutdown(callback: (err?: Error) => void): void;
+export declare function retry<T = any>(cb: Function, maxRetries?: number, errorWhiteList?: any[], retries?: number): Promise<T>;
+export declare function spliceOne(arr: any[], index: number): boolean;
+export declare class Deferred<T = any> {
+    promise: Promise<T>;
+    protected chain: Promise<T>;
+    resolve: Function;
+    reject: Function;
+    constructor();
+    then(func: (value: T) => any): Promise<T>;
+    catch(func: (value: any) => any): Promise<T>;
+}
+export declare function merge(a: any, ...objs: any[]): any;
+export declare interface DummyServer {
+    constructor(options?: ServerOpts, connectionListener?: (socket: Socket) => void): any;
+    listen(port?: number, hostname?: string, backlog?: number, listeningListener?: () => void): this;
+    close(callback?: (err?: Error) => void): this;
+}
+export declare class DummyServer extends EventEmitter {
+}
