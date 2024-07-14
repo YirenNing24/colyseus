@@ -1,8 +1,9 @@
 import "./loadenv";
 import os from "os";
 import http from "http";
-import cors from "cors";
-import express from "express";
+import { cors } from '@elysiajs/cors'
+import Elysia from "elysia";
+
 import osUtils from "node-os-utils";
 import { logger, Server, ServerOptions, Transport, matchMaker } from '@colyseus/core';
 import { WebSocketTransport } from '@colyseus/ws-transport';
@@ -19,7 +20,7 @@ export interface ConfigOptions {
     displayLogs?: boolean,
     getId?: () => string,
     initializeTransport?: (options: any) => Transport,
-    initializeExpress?: (app: express.Express) => void,
+    initializeExpress?: (app: Elysia) => void,
     initializeGameServer?: (app: Server) => void,
     beforeListen?: () => void,
 }
@@ -156,7 +157,8 @@ export async function getTransport(options: ConfigOptions) {
         }
     }
 
-    let app: express.Express | undefined = express();
+    let app: Elysia | undefined = new Elysia();
+    //@ts-ignore
     let server = http.createServer(app);
 
     transport = await options.initializeTransport({ server });
@@ -199,8 +201,6 @@ export async function getTransport(options: ConfigOptions) {
       // Enable CORS
       app.use(cors({ origin: true, credentials: true, }));
 
-      // Enable JSON parsing.
-      app.use(express.json());
 
       if (options.initializeExpress) {
           await options.initializeExpress(app);
