@@ -5,7 +5,7 @@
 import { ServerWebSocket, WebSocketHandler } from "bun";
 
 import type http from 'http';
-import bunExpress from "bun-serve-express";
+import Elysia from "elysia";
 
 import { DummyServer, matchMaker, Transport, debugAndPrintError, spliceOne, ServerError, getBearerToken } from '@colyseus/core';
 import { WebSocketClient, WebSocketWrapper } from './WebSocketClient';
@@ -33,8 +33,8 @@ export class BunWebSockets extends Transport {
     super();
 
     const self = this;
-
-    this.expressApp = bunExpress({
+    //@ts-ignore
+    this.expressApp = new Elysia({
       websocket: {
         ...this.options,
 
